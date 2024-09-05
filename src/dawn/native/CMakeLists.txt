@@ -555,6 +555,7 @@ if (DAWN_ENABLE_NULL)
     )
 endif()
 
+# Don't need SPIRV for MINIMAL_VULKAN
 if ((DAWN_ENABLE_OPENGL OR DAWN_ENABLE_VULKAN) AND DAWN_ENABLE_SPIRV_VALIDATION)
     list(APPEND private_headers
         "SpirvValidation.h"
@@ -759,6 +760,121 @@ if (DAWN_ENABLE_VULKAN)
     endif()
 endif()
 
+if (DAWN_ENABLE_MINIMAL_VULKAN)
+    list(APPEND headers
+        "${DAWN_INCLUDE_DIR}/dawn/native/VulkanBackend.h"
+    )
+    list(APPEND private_headers
+        "vulkan_minimal/BackendVk.h"
+        "vulkan_minimal/BindGroupLayoutVk.h"
+        "vulkan_minimal/BindGroupVk.h"
+        "vulkan_minimal/BufferVk.h"
+        "vulkan_minimal/CommandBufferVk.h"
+        "vulkan_minimal/CommandRecordingContext.h"
+        "vulkan_minimal/ComputePipelineVk.h"
+        "vulkan_minimal/DescriptorSetAllocation.h"
+        "vulkan_minimal/DescriptorSetAllocator.h"
+        "vulkan_minimal/DeviceVk.h"
+        "vulkan_minimal/ExternalHandle.h"
+        "vulkan_minimal/FencedDeleter.h"
+        "vulkan_minimal/Forward.h"
+        "vulkan_minimal/PhysicalDeviceVk.h"
+        "vulkan_minimal/PipelineCacheVk.h"
+        "vulkan_minimal/PipelineLayoutVk.h"
+        "vulkan_minimal/QuerySetVk.h"
+        "vulkan_minimal/QueueVk.h"
+        "vulkan_minimal/RefCountedVkHandle.h"
+        "vulkan_minimal/RenderPassCache.h"
+        "vulkan_minimal/RenderPipelineVk.h"
+        "vulkan_minimal/ResolveTextureLoadingUtilsVk.h"
+        "vulkan_minimal/ResourceHeapVk.h"
+        "vulkan_minimal/ResourceMemoryAllocatorVk.h"
+        "vulkan_minimal/SamplerVk.h"
+        "vulkan_minimal/ShaderModuleVk.h"
+        "vulkan_minimal/SharedFenceVk.h"
+        "vulkan_minimal/SharedTextureMemoryVk.h"
+        "vulkan_minimal/SwapChainVk.h"
+        "vulkan_minimal/TextureVk.h"
+        "vulkan_minimal/UtilsVulkan.h"
+        "vulkan_minimal/VulkanError.h"
+        "vulkan_minimal/VulkanExtensions.h"
+        "vulkan_minimal/VulkanFunctions.h"
+        "vulkan_minimal/VulkanInfo.h"
+        "vulkan_minimal/external_memory/MemoryImportParams.h"
+        "vulkan_minimal/external_memory/MemoryService.h"
+        "vulkan_minimal/external_memory/MemoryServiceImplementation.h"
+        "vulkan_minimal/external_semaphore/SemaphoreService.h"
+        "vulkan_minimal/external_semaphore/SemaphoreServiceImplementation.h"
+    )
+    list(APPEND sources
+        "vulkan_minimal/BackendVk.cpp"
+        "vulkan_minimal/BindGroupLayoutVk.cpp"
+        "vulkan_minimal/BindGroupVk.cpp"
+        "vulkan_minimal/BufferVk.cpp"
+        "vulkan_minimal/CommandBufferVk.cpp"
+        "vulkan_minimal/ComputePipelineVk.cpp"
+        "vulkan_minimal/DescriptorSetAllocator.cpp"
+        "vulkan_minimal/DeviceVk.cpp"
+        "vulkan_minimal/FencedDeleter.cpp"
+        "vulkan_minimal/PhysicalDeviceVk.cpp"
+        "vulkan_minimal/PipelineCacheVk.cpp"
+        "vulkan_minimal/PipelineLayoutVk.cpp"
+        "vulkan_minimal/QuerySetVk.cpp"
+        "vulkan_minimal/QueueVk.cpp"
+        "vulkan_minimal/RenderPassCache.cpp"
+        "vulkan_minimal/RenderPipelineVk.cpp"
+        "vulkan_minimal/ResolveTextureLoadingUtilsVk.cpp"
+        "vulkan_minimal/ResourceHeapVk.cpp"
+        "vulkan_minimal/ResourceMemoryAllocatorVk.cpp"
+        "vulkan_minimal/SamplerVk.cpp"
+        "vulkan_minimal/ShaderModuleVk.cpp"
+        "vulkan_minimal/SharedFenceVk.cpp"
+        "vulkan_minimal/SharedTextureMemoryVk.cpp"
+        "vulkan_minimal/StreamImplVk.cpp"
+        "vulkan_minimal/SwapChainVk.cpp"
+        "vulkan_minimal/TextureVk.cpp"
+        "vulkan_minimal/UtilsVulkan.cpp"
+        "vulkan_minimal/VulkanError.cpp"
+        "vulkan_minimal/VulkanExtensions.cpp"
+        "vulkan_minimal/VulkanFunctions.cpp"
+        "vulkan_minimal/VulkanInfo.cpp"
+        "vulkan_minimal/external_memory/MemoryService.cpp"
+        "vulkan_minimal/external_memory/MemoryServiceImplementation.cpp"
+        "vulkan_minimal/external_semaphore/SemaphoreService.cpp"
+        "vulkan_minimal/external_semaphore/SemaphoreServiceImplementation.cpp"
+    )
+
+    list(APPEND conditional_public_depends
+        Vulkan-Headers
+        VulkanUtilityHeaders
+    )
+
+    if (ANDROID)
+        list(APPEND private_headers
+            "vulkan_minimal/external_memory/MemoryServiceImplementationAHardwareBuffer.h"
+            "vulkan_minimal/external_semaphore/SemaphoreServiceImplementationFD.h"
+        )
+        list(APPEND sources
+            "vulkan_minimal/external_memory/MemoryServiceImplementationAHardwareBuffer.cpp"
+            "vulkan_minimal/external_semaphore/SemaphoreServiceImplementationFD.cpp"
+        )
+    elseif (UNIX AND NOT APPLE)
+        list(APPEND private_headers
+            "vulkan_minimal/external_memory/MemoryServiceImplementationDmaBuf.h"
+            "vulkan_minimal/external_memory/MemoryServiceImplementationOpaqueFD.h"
+            "vulkan_minimal/external_semaphore/SemaphoreServiceImplementationFD.h"
+        )
+        list(APPEND sources
+            "vulkan_minimal/external_memory/MemoryServiceImplementationDmaBuf.cpp"
+            "vulkan_minimal/external_memory/MemoryServiceImplementationOpaqueFD.cpp"
+            "vulkan_minimal/external_semaphore/SemaphoreServiceImplementationFD.cpp"
+        )
+    endif()
+endif()
+
+
+
+
 set(dawn_component_srcs)
 list(APPEND dawn_component_srcs "DawnNative.cpp")
 if (DAWN_ENABLE_D3D11 OR DAWN_ENABLE_D3D12)
@@ -779,7 +895,7 @@ endif()
 if (DAWN_ENABLE_OPENGL)
     list(APPEND dawn_component_srcs "opengl/OpenGLBackend.cpp")
 endif()
-if (DAWN_ENABLE_VULKAN)
+if (DAWN_ENABLE_VULKAN OR DAWN_ENABLE_MINIMAL_VULKAN)
     list(APPEND dawn_component_srcs "vulkan/VulkanBackend.cpp")
 endif()
 

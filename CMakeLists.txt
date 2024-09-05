@@ -71,6 +71,7 @@ set(ENABLE_NULL ON)
 set(ENABLE_OPENGLES OFF)
 set(ENABLE_DESKTOP_GL OFF)
 set(ENABLE_VULKAN OFF)
+set(ENABLE_MINIMAL_VULKAN OFF)
 set(ENABLE_EMSCRIPTEN OFF)
 set(ENABLE_SPIRV_VALIDATION OFF)
 set(USE_WAYLAND OFF)
@@ -137,6 +138,7 @@ option(DAWN_ENABLE_NULL "Enable compilation of the Null backend" ${ENABLE_NULL})
 option(DAWN_ENABLE_DESKTOP_GL "Enable compilation of the OpenGL backend" ${ENABLE_DESKTOP_GL})
 option(DAWN_ENABLE_OPENGLES "Enable compilation of the OpenGL ES backend" ${ENABLE_OPENGLES})
 option(DAWN_ENABLE_VULKAN "Enable compilation of the Vulkan backend" ${ENABLE_VULKAN})
+option(DAWN_ENABLE_MINIMAL_VULKAN "Enable minimal Vulkan backend" ${ENABLE_MINIMAL_VULKAN})
 option(DAWN_ENABLE_SPIRV_VALIDATION "Enable validation of SPIR-V" ${ENABLE_SPIRV_VALIDATION})
 
 # Optional path to Emscripten toolchain to allow for building WASM.
@@ -190,6 +192,13 @@ option(TINT_BUILD_HLSL_WRITER "Build the HLSL output writer" ${DAWN_ENABLE_D3D12
 option(TINT_BUILD_MSL_WRITER "Build the MSL output writer" ${DAWN_ENABLE_METAL})
 option(TINT_BUILD_SPV_WRITER "Build the SPIR-V output writer" ${DAWN_ENABLE_VULKAN})
 option(TINT_BUILD_WGSL_WRITER "Build the WGSL output writer" ON)
+
+if (DAWN_ENABLE_MINIMAL_VULKAN) 
+  set(TINT_BUILD_WGSL_READER OFF)
+  set(TINT_BUILD_WGSL_WRITER OFF)
+  set(TINT_BUILD_GLSL_VALIDATOR OFF)
+endif()
+
 
 option(TINT_BUILD_SYNTAX_TREE_WRITER "Build the syntax tree writer" OFF)
 
@@ -289,10 +298,17 @@ message(STATUS "Dawn build D3D11 backend: ${DAWN_ENABLE_D3D11}")
 message(STATUS "Dawn build D3D12 backend: ${DAWN_ENABLE_D3D12}")
 message(STATUS "Dawn build Metal backend: ${DAWN_ENABLE_METAL}")
 message(STATUS "Dawn build Vulkan backend: ${DAWN_ENABLE_VULKAN}")
+message(STATUS "Dawn build minimal Vulkan backend: ${DAWN_ENABLE_MINIMAL_VULKAN}")
 message(STATUS "Dawn build OpenGL backend: ${DAWN_ENABLE_DESKTOP_GL}")
 message(STATUS "Dawn build OpenGL ES backend: ${DAWN_ENABLE_OPENGLES}")
 message(STATUS "Dawn build Emscripten: ${DAWN_ENABLE_EMSCRIPTEN}")
 message(STATUS "Dawn build Null backend: ${DAWN_ENABLE_NULL}")
+
+
+# check that only one of Vulkan and minimal Vulkan is enabled
+if (DAWN_ENABLE_VULKAN AND DAWN_ENABLE_MINIMAL_VULKAN)
+    message(FATAL_ERROR "Cannot enable both Vulkan and minimal Vulkan backends")
+endif()
 
 message(STATUS "Dawn enable SPIR-V validation: ${DAWN_ENABLE_SPIRV_VALIDATION}")
 
@@ -379,6 +395,9 @@ endif()
 if (DAWN_ENABLE_VULKAN)
     target_compile_definitions(dawn_internal_config INTERFACE "DAWN_ENABLE_BACKEND_VULKAN")
 endif()
+if (DAWN_ENABLE_MINIMAL_VULKAN)
+    target_compile_definitions(dawn_internal_config INTERFACE "DAWN_ENABLE_BACKEND_VULKAN")
+endif()
 if (DAWN_USE_WAYLAND)
     target_compile_definitions(dawn_internal_config INTERFACE "DAWN_USE_WAYLAND")
 endif()
@@ -430,7 +449,7 @@ if (NOT ${DAWN_ENABLE_EMSCRIPTEN})
 endif()
 set(BUILD_SHARED_LIBS ${BUILD_SHARED_LIBS_SAVED})
 
-if (DAWN_ENABLE_D3D11 OR DAWN_ENABLE_D3D12 OR DAWN_ENABLE_METAL OR DAWN_ENABLE_NULL OR DAWN_ENABLE_DESKTOP_GL OR DAWN_ENABLE_OPENGLES OR DAWN_ENABLE_VULKAN OR DAWN_ENABLE_EMSCRIPTEN)
+if (DAWN_ENABLE_D3D11 OR DAWN_ENABLE_D3D12 OR DAWN_ENABLE_METAL OR DAWN_ENABLE_NULL OR DAWN_ENABLE_DESKTOP_GL OR DAWN_ENABLE_OPENGLES OR DAWN_ENABLE_VULKAN OR DAWN_ENABLE_EMSCRIPTEN OR DAWN_ENABLE_MINIMAL_VULKAN)
     add_subdirectory(generator)
     # Note that we must add Emscripten directory first to ensure the correct
     # headers will be exported upwards.

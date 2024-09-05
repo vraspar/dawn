@@ -85,8 +85,9 @@ if (NOT TARGET SPIRV-Headers)
     add_subdirectory(${DAWN_SPIRV_HEADERS_DIR} "${CMAKE_CURRENT_BINARY_DIR}/spirv-headers")
 endif()
 
+# TODO: ADD DAWN_ENABLE_MINIMAL_VULKAN support
 if (NOT TARGET SPIRV-Tools AND
-    (((DAWN_ENABLE_OPENGL OR DAWN_ENABLE_VULKAN)
+    (((DAWN_ENABLE_OPENGL OR DAWN_ENABLE_VULKAN OR DAWN_ENABLE_MINIMAL_VULKAN)
         AND DAWN_ENABLE_SPIRV_VALIDATION)
         OR TINT_BUILD_SPV_READER
         OR TINT_BUILD_SPV_WRITER
@@ -136,14 +137,14 @@ if (DAWN_ENABLE_DESKTOP_GL OR DAWN_ENABLE_OPENGLES)
     target_include_directories(dawn_khronos_platform INTERFACE "${CMAKE_CURRENT_SOURCE_DIR}/khronos/EGL-Registry/api")
 endif()
 
-if (NOT TARGET Vulkan-Headers AND DAWN_ENABLE_VULKAN)
+if (NOT TARGET Vulkan-Headers AND (DAWN_ENABLE_VULKAN OR DAWN_ENABLE_MINIMAL_VULKAN))
     message(STATUS "Dawn: using Vulkan-Headers at ${DAWN_VULKAN_HEADERS_DIR}")
 
     set(VULKAN_HEADERS_ENABLE_MODULE OFF)
     add_subdirectory(${DAWN_VULKAN_HEADERS_DIR} "${CMAKE_CURRENT_BINARY_DIR}/vulkan-headers")
 endif()
 
-if (NOT TARGET VulkanUtilityHeaders AND DAWN_ENABLE_VULKAN)
+if (NOT TARGET VulkanUtilityHeaders AND (DAWN_ENABLE_VULKAN OR DAWN_ENABLE_MINIMAL_VULKAN))
     message(STATUS "Dawn: using VulkanUtilityLibraries at ${DAWN_VULKAN_UTILITY_LIBRARIES_DIR}")
     add_subdirectory(${DAWN_VULKAN_UTILITY_LIBRARIES_DIR} "${CMAKE_CURRENT_BINARY_DIR}/vulkan-utility-libraries")
 endif()

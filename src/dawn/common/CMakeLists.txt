@@ -150,10 +150,11 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Android")
         android)
 endif ()
 
-if (DAWN_ENABLE_VULKAN)
+if (DAWN_ENABLE_VULKAN OR DAWN_ENABLE_MINIMAL_VULKAN)
     list(APPEND conditional_private_depends
         Vulkan-Headers)
 endif ()
+
 
 list(APPEND conditional_private_depends
     ${CMAKE_DL_LIBS})
