@@ -2,8 +2,10 @@
 precision highp float;
 precision highp int;
 
-
-int tint_symbol[4];
+layout(binding = 0, std430)
+buffer tint_symbol_3_1_ssbo {
+  int tint_symbol_2[4];
+} v;
 void foo() {
   {
     int i = 0;
@@ -12,7 +14,7 @@ void foo() {
       } else {
         break;
       }
-      switch(tint_symbol[i]) {
+      switch(v.tint_symbol_2[i]) {
         case 1:
         {
           {
@@ -22,7 +24,7 @@ void foo() {
         }
         default:
         {
-          tint_symbol[i] = 2;
+          v.tint_symbol_2[i] = 2;
           break;
         }
       }

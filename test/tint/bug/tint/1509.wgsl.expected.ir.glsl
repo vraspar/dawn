@@ -1,9 +1,6 @@
-SKIP: FAILED
-
 #version 310 es
 precision highp float;
 precision highp int;
-
 
 uint v0 = 0u;
 uint v1 = 0u;
@@ -1005,6 +1002,7 @@ uint v996 = 0u;
 uint v997 = 0u;
 uint v998 = 0u;
 uint v999 = 0u;
+layout(location = 0) out uint tint_symbol_loc0_Output;
 uint foo() {
   uint x = 0u;
   x = (x + v0);
@@ -2009,15 +2007,9 @@ uint foo() {
   x = (x + v999);
   return x;
 }
-uint main() {
+uint tint_symbol_inner() {
   return foo();
 }
-error: Error parsing GLSL shader:
-ERROR: 0:2010: 'uint' :  entry point cannot return a value
-ERROR: 0:2010: '' : compilation terminated 
-ERROR: 2 compilation errors.  No code generated.
-
-
-
-
-tint executable returned error: exit status 1
+void main() {
+  tint_symbol_loc0_Output = tint_symbol_inner();
+}

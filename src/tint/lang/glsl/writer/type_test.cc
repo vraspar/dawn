@@ -110,6 +110,7 @@ TEST_F(GlslWriterTest, EmitType_StructArrayVec) {
 
     ASSERT_TRUE(Generate()) << err_ << output_.glsl;
     EXPECT_EQ(output_.glsl, GlslHeader() + R"(
+
 struct Inner {
   vec3 t[5];
 };
@@ -265,7 +266,7 @@ TEST_F(GlslWriterTest, EmitType_Atomic_U32) {
     });
     ASSERT_TRUE(Generate()) << err_ << output_.glsl;
     EXPECT_EQ(output_.glsl, GlslHeader() + R"(
-uint a;
+shared uint a;
 layout(local_size_x = 1, local_size_y = 1, local_size_z = 1) in;
 void main() {
 }
@@ -278,7 +279,7 @@ TEST_F(GlslWriterTest, EmitType_Atomic_I32) {
     });
     ASSERT_TRUE(Generate()) << err_ << output_.glsl;
     EXPECT_EQ(output_.glsl, GlslHeader() + R"(
-int a;
+shared int a;
 layout(local_size_x = 1, local_size_y = 1, local_size_z = 1) in;
 void main() {
 }
@@ -399,6 +400,7 @@ TEST_F(GlslWriterTest, EmitType_Struct) {
 
     ASSERT_TRUE(Generate()) << err_ << output_.glsl;
     EXPECT_EQ(output_.glsl, GlslHeader() + R"(
+
 struct S {
   int a;
   float b;
@@ -426,6 +428,7 @@ TEST_F(GlslWriterTest, EmitType_Struct_Dedup) {
 
     ASSERT_TRUE(Generate()) << err_ << output_.glsl;
     EXPECT_EQ(output_.glsl, GlslHeader() + R"(
+
 struct S {
   int a;
   float b;
@@ -459,6 +462,7 @@ TEST_F(GlslWriterTest, EmitType_Struct_Nested) {
 
     ASSERT_TRUE(Generate()) << err_ << output_.glsl;
     EXPECT_EQ(output_.glsl, GlslHeader() + R"(
+
 struct Inner {
   uint x;
   vec4 y;
