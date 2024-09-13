@@ -349,7 +349,7 @@ ResultOrError<PixelLocalMemberType> FromTintPixelLocalMemberType(
     }
     DAWN_UNREACHABLE();
 }
-
+#if TINT_BUILD_WGSL_READER
 ResultOrError<tint::Program> ParseWGSL(const tint::Source::File* file,
                                        const tint::wgsl::AllowedFeatures& allowedFeatures,
                                        const tint::wgsl::ValidationMode mode,
@@ -370,6 +370,7 @@ ResultOrError<tint::Program> ParseWGSL(const tint::Source::File* file,
 
     return std::move(program);
 }
+#endif  // TINT_BUILD_WGSL_READER
 
 #if TINT_BUILD_SPV_READER
 ResultOrError<tint::Program> ParseSPIRV(const std::vector<uint32_t>& spirv,
@@ -1181,37 +1182,39 @@ MaybeError ValidateAndParseShaderModule(
             return {};
         }
 #endif  // TINT_BUILD_SPV_READER
+#if TINT_BUILD_WGSL_READER
         case wgpu::SType::ShaderSourceWGSL: {
             wgslDesc = descriptor.Get<ShaderSourceWGSL>();
-            break;
+            DAWN_ASSERT(wgslDesc != nullptr);
+
+            DAWN_INVALID_IF(descriptor.Get<ShaderModuleCompilationOptions>() != nullptr &&
+                                !device->HasFeature(Feature::ShaderModuleCompilationOptions),
+                            "Shader module compilation options used without %s enabled.",
+                            wgpu::FeatureName::ShaderModuleCompilationOptions);
+
+            auto tintFile = std::make_unique<tint::Source::File>("", wgslDesc->code);
+
+            if (device->IsToggleEnabled(Toggle::DumpShaders)) {
+                std::ostringstream dumpedMsg;
+                dumpedMsg << "// Dumped WGSL:\n" << wgslDesc->code << "\n";
+                device->EmitLog(WGPULoggingType_Info, dumpedMsg.str().c_str());
+            }
+
+            tint::Program program;
+            auto validationMode = device->IsCompatibilityMode() ? tint::wgsl::ValidationMode::kCompat
+                                                                : tint::wgsl::ValidationMode::kFull;
+            DAWN_TRY_ASSIGN(program, ParseWGSL(tintFile.get(), device->GetWGSLAllowedFeatures(),
+                                            validationMode, internalExtensions, outMessages));
+
+            parseResult->tintProgram = AcquireRef(new TintProgram(std::move(program), std::move(tintFile)));
+
+            return {};
         }
+#endif  // TINT_BUILD_WGSL_READER
         default:
             DAWN_UNREACHABLE();
     }
-    DAWN_ASSERT(wgslDesc != nullptr);
-
-    DAWN_INVALID_IF(descriptor.Get<ShaderModuleCompilationOptions>() != nullptr &&
-                        !device->HasFeature(Feature::ShaderModuleCompilationOptions),
-                    "Shader module compilation options used without %s enabled.",
-                    wgpu::FeatureName::ShaderModuleCompilationOptions);
-
-    auto tintFile = std::make_unique<tint::Source::File>("", wgslDesc->code);
-
-    if (device->IsToggleEnabled(Toggle::DumpShaders)) {
-        std::ostringstream dumpedMsg;
-        dumpedMsg << "// Dumped WGSL:\n" << wgslDesc->code << "\n";
-        device->EmitLog(WGPULoggingType_Info, dumpedMsg.str().c_str());
-    }
-
-    tint::Program program;
-    auto validationMode = device->IsCompatibilityMode() ? tint::wgsl::ValidationMode::kCompat
-                                                        : tint::wgsl::ValidationMode::kFull;
-    DAWN_TRY_ASSIGN(program, ParseWGSL(tintFile.get(), device->GetWGSLAllowedFeatures(),
-                                       validationMode, internalExtensions, outMessages));
-
-    parseResult->tintProgram = AcquireRef(new TintProgram(std::move(program), std::move(tintFile)));
-
-    return {};
+    
 }
 
 RequiredBufferSizes ComputeRequiredBufferSizesForLayout(const EntryPointMetadata& entryPoint,
