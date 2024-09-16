@@ -363,7 +363,9 @@ class DeviceBase : public ErrorSink, public RefCountedWithExternalCount<RefCount
     const ApiObjectList* GetObjectTrackingList(ObjectType type) const;
 
     std::vector<const char*> GetTogglesUsed() const;
+#if TINT_BUILD_WGSL_READER || TINT_BUILD_SPV_READER 
     const tint::wgsl::AllowedFeatures& GetWGSLAllowedFeatures() const;
+#endif  // TINT_BUILD_SPV_READER || TINT_BUILD_WGSL_READER
     bool IsToggleEnabled(Toggle toggle) const;
     const TogglesState& GetTogglesState() const;
     bool IsValidationEnabled() const;
@@ -543,7 +545,9 @@ class DeviceBase : public ErrorSink, public RefCountedWithExternalCount<RefCount
 
     void ApplyFeatures(const UnpackedPtr<DeviceDescriptor>& deviceDescriptor);
 
+#if TINT_BUILD_WGSL_READER || TINT_BUILD_SPV_READER
     void SetWGSLExtensionAllowList();
+#endif  // TINT_BUILD_WGSL_READER || TINT_BUILD_SPV_READER
 
     // ErrorSink implementation
     void ConsumeError(std::unique_ptr<ErrorData> error,
@@ -606,7 +610,9 @@ class DeviceBase : public ErrorSink, public RefCountedWithExternalCount<RefCount
 
     CombinedLimits mLimits;
     FeaturesSet mEnabledFeatures;
+#if TINT_BUILD_WGSL_READER || TINT_BUILD_SPV_READER
     tint::wgsl::AllowedFeatures mWGSLAllowedFeatures;
+#endif  // TINT_BUILD_SPV_READER || TINT_BUILD_WGSL_READER
 
     std::unique_ptr<InternalPipelineStore> mInternalPipelineStore;
     Ref<BufferBase> mTemporaryUniformBuffer;

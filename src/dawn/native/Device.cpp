@@ -464,7 +464,9 @@ DeviceBase::~DeviceBase() {
 MaybeError DeviceBase::Initialize(Ref<QueueBase> defaultQueue) {
     mQueue = std::move(defaultQueue);
 
+#if TINT_BUILD_WGSL_READER || TINT_BUILD_SPV_READER
     SetWGSLExtensionAllowList();
+#endif // TINT_BUILD_WGSL_READER || TINT_BUILD_SPV_READER
 
     mCaches = std::make_unique<DeviceBase::Caches>();
     mErrorScopeStack = std::make_unique<ErrorScopeStack>();
@@ -1833,6 +1835,9 @@ bool DeviceBase::HasFeature(Feature feature) const {
     return mEnabledFeatures.IsEnabled(feature);
 }
 
+
+// only include if TINT_BUILD_WGSL_READER or TINT_BUILD_SPV_READER is enabled
+#if TINT_BUILD_WGSL_READER || TINT_BUILD_SPV_READER
 void DeviceBase::SetWGSLExtensionAllowList() {
     // Set the WGSL extensions and language features allow list based on device's enabled features
     // and other properties.
@@ -1879,6 +1884,7 @@ void DeviceBase::SetWGSLExtensionAllowList() {
 const tint::wgsl::AllowedFeatures& DeviceBase::GetWGSLAllowedFeatures() const {
     return mWGSLAllowedFeatures;
 }
+#endif  // TINT_BUILD_WGSL_READER || TINT_BUILD_SPV_READER
 
 bool DeviceBase::IsValidationEnabled() const {
     return !IsToggleEnabled(Toggle::SkipValidation);
