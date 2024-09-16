@@ -44,6 +44,7 @@
 #include "dawn/native/Queue.h"
 #include "dawn/native/Sampler.h"
 #include "dawn/native/ShaderModule.h"
+#include "dawn/native/Extension.h"
 
 namespace dawn::native::utils {
 

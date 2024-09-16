@@ -37,6 +37,7 @@
 #include "dawn/native/ShaderModule.h"
 #include "dawn/native/d3d/ShaderUtils.h"
 #include "dawn/native/d3d/d3d_platform.h"
+#include "dawn/native/Extension.h"
 
 namespace dawn::native {
 struct ProgrammableStage;

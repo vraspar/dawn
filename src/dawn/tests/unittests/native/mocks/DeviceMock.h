@@ -36,6 +36,7 @@
 #include "dawn/native/RenderPipeline.h"
 #include "dawn/platform/DawnPlatform.h"
 #include "dawn/tests/unittests/native/mocks/QueueMock.h"
+#include "dawn/native/Extension.h"
 #include "gmock/gmock.h"
 
 namespace dawn::native {

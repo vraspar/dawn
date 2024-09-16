@@ -41,6 +41,7 @@
 #include "dawn/native/opengl/PipelineLayoutGL.h"
 #include "dawn/platform/DawnPlatform.h"
 #include "dawn/platform/tracing/TraceEvent.h"
+#include "dawn/native/Extension.h"
 
 #include "src/tint/api/common/binding_point.h"
 

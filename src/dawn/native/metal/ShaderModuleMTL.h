@@ -35,6 +35,7 @@
 
 #include "dawn/common/NSRef.h"
 #include "dawn/native/Error.h"
+#include "dawn/native/Extension.h"
 
 #import <Metal/Metal.h>
 

@@ -40,6 +40,7 @@
 #include "dawn/native/opengl/Forward.h"
 #include "dawn/native/opengl/GLFormat.h"
 #include "dawn/native/opengl/OpenGLFunctions.h"
+#include "dawn/native/Extension.h"
 
 namespace dawn::native::opengl {
 

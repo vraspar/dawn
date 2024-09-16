@@ -36,6 +36,7 @@
 #include "dawn/native/Error.h"
 #include "dawn/native/UsageValidationMode.h"
 #include "dawn/native/dawn_platform.h"
+#include "dawn/native/Extension.h"
 
 namespace tint::wgsl {
 enum class Extension : uint8_t;

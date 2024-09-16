@@ -40,6 +40,7 @@
 #include "dawn/native/Error.h"
 #include "dawn/native/ShaderModule.h"
 #include "partition_alloc/pointers/raw_ptr.h"
+#include "dawn/native/Extension.h"
 
 namespace dawn::native {
 

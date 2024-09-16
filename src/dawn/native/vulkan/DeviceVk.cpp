@@ -61,6 +61,7 @@
 #include "dawn/native/vulkan/TextureVk.h"
 #include "dawn/native/vulkan/UtilsVulkan.h"
 #include "dawn/native/vulkan/VulkanError.h"
+#include "dawn/native/Extension.h"
 
 namespace dawn::native::vulkan {
 namespace {

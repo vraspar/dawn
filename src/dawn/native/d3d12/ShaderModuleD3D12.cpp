@@ -48,6 +48,7 @@
 #include "dawn/platform/DawnPlatform.h"
 #include "dawn/platform/metrics/HistogramMacros.h"
 #include "dawn/platform/tracing/TraceEvent.h"
+#include "dawn/native/Extension.h"
 
 #include "tint/tint.h"
 

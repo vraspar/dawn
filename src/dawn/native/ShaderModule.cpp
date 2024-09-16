@@ -45,6 +45,7 @@
 #include "dawn/native/RenderPipeline.h"
 #include "dawn/native/Sampler.h"
 #include "dawn/native/TintUtils.h"
+#include "dawn/native/Extension.h"
 
 #ifdef DAWN_ENABLE_SPIRV_VALIDATION
 #include "dawn/native/SpirvValidation.h"

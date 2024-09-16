@@ -36,6 +36,7 @@
 #include "dawn/native/d3d11/CommandRecordingContextD3D11.h"
 #include "dawn/native/d3d11/DeviceInfoD3D11.h"
 #include "dawn/native/d3d11/Forward.h"
+#include "dawn/native/Extension.h"
 
 namespace dawn::native::d3d11 {
 

@@ -52,6 +52,7 @@
 #include "dawn/native/opengl/TextureGL.h"
 #include "dawn/native/opengl/UtilsGL.h"
 #include "dawn/native/opengl/opengl_platform.h"
+#include "dawn/native/Extension.h"
 
 namespace {
 

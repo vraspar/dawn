@@ -54,6 +54,7 @@
 #include "dawn/native/ObjectBase.h"
 #include "dawn/native/PerStage.h"
 #include "dawn/native/dawn_platform.h"
+#include "dawn/native/Extension.h"
 #include "tint/tint.h"
 
 namespace tint {

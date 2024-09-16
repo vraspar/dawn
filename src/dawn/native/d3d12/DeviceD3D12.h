@@ -38,6 +38,7 @@
 #include "dawn/native/d3d12/D3D12Info.h"
 #include "dawn/native/d3d12/Forward.h"
 #include "dawn/native/d3d12/TextureD3D12.h"
+#include "dawn/native/Extension.h"
 
 namespace dawn::native::d3d {
 class ExternalImageDXGIImpl;

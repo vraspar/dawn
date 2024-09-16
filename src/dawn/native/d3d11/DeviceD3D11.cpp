@@ -61,7 +61,7 @@
 #include "dawn/native/d3d11/UtilsD3D11.h"
 #include "dawn/platform/DawnPlatform.h"
 #include "dawn/platform/tracing/TraceEvent.h"
-
+#include "dawn/native/Extension.h"
 namespace dawn::native::d3d11 {
 namespace {
 

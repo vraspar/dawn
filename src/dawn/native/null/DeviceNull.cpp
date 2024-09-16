@@ -37,6 +37,7 @@
 #include "dawn/native/Instance.h"
 #include "dawn/native/Surface.h"
 #include "dawn/native/TintUtils.h"
+#include "dawn/native/Extension.h"
 #include "partition_alloc/pointers/raw_ptr.h"
 
 #include "tint/tint.h"

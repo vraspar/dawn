@@ -57,6 +57,7 @@
 #include "dawn/native/Toggles.h"
 #include "dawn/native/UsageValidationMode.h"
 #include "partition_alloc/pointers/raw_ptr.h"
+#include "dawn/native/Extension.h"
 
 #include "dawn/native/DawnNative.h"
 #include "dawn/native/dawn_platform.h"

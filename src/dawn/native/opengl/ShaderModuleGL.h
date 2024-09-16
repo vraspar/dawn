@@ -35,6 +35,7 @@
 #include "dawn/native/ShaderModule.h"
 #include "dawn/native/opengl/BindingPoint.h"
 #include "dawn/native/opengl/opengl_platform.h"
+#include "dawn/native/Extension.h"
 
 namespace dawn::native {
 

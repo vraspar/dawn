@@ -52,6 +52,7 @@
 #include "dawn/platform/tracing/TraceEvent.h"
 #include "partition_alloc/pointers/raw_ptr.h"
 #include "tint/tint.h"
+#include "dawn/native/Extension.h"
 
 #ifdef DAWN_ENABLE_SPIRV_VALIDATION
 #include "dawn/native/SpirvValidation.h"

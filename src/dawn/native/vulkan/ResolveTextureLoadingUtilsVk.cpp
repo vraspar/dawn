@@ -48,6 +48,7 @@
 #include "dawn/native/vulkan/UtilsVulkan.h"
 #include "dawn/native/vulkan/VulkanError.h"
 #include "dawn/native/webgpu_absl_format.h"
+#include "dawn/native/Extension.h"
 
 namespace dawn::native::vulkan {
 

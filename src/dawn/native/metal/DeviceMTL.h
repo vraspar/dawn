@@ -39,6 +39,7 @@
 #include "dawn/native/Device.h"
 #include "dawn/native/metal/CommandRecordingContext.h"
 #include "dawn/native/metal/Forward.h"
+#include "dawn/native/Extension.h"
 
 #import <IOSurface/IOSurfaceRef.h>
 #import <Metal/Metal.h>

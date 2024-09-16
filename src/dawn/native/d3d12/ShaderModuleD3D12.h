@@ -36,6 +36,7 @@
 #include "dawn/native/Serializable.h"
 #include "dawn/native/ShaderModule.h"
 #include "dawn/native/d3d/ShaderUtils.h"
+#include "dawn/native/Extension.h"
 #include "dawn/native/d3d12/d3d12_platform.h"
 
 namespace dawn::native {
